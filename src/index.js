@@ -2,26 +2,31 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import DevTools from 'mobx-react-devtools';
-import { observable, computed } from 'mobx';
+import { observable, computed, configure, action } from 'mobx';
 import { observer } from 'mobx-react';
 
-const nickName = new class UserNickName {
-  @observable firstName = 'Platon';
-  @observable age = 21;
+configure({enforceActions: `observed`})
 
-  @computed get nickName() {
+const nickName = observable ({
+   firstName :'Platon',
+   age : 21,
+
+  get nickName() {
     console.log('Generate nickName');
     return `${this.firstName}${this.age}`
+  },
+  increment () {
+    this.age++
+  },
+  decrement () {
+    this.age--
   }
-}
-
-nickName.increment = function() {
-  this.age++
-}
-
-nickName.decrement = function() {
-  this.age--
-}
+}, {
+  increment: action('Plus One'),
+  decrement: action('Minus One')
+}, {
+  name: 'nickNameObservableObject'
+})
 
 @observer class Counter extends Component {  
 
