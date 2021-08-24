@@ -1,20 +1,40 @@
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import DevTools from 'mobx-react-devtools'
+import DevTools from 'mobx-react-devtools';
+import { observable } from 'mobx';
+import { observer } from 'mobx-react';
 
-function App() {
-  return (
-    <div className="App">
-      <DevTools />
-      <h1>Hello world!</h1>
-    </div>
-  );
+const counterState = observable({
+  count: 0,
+})
+
+counterState.increment = function() {
+  this.count++
 }
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+counterState.decrement = function() {
+  this.count--
+}
+
+@observer class Counter extends Component {  
+
+  handleIncrement = () =>{this.props.store.increment()}
+  handleDecrement = () => {this.props.store.decrement()} 
+
+  render() {
+    return (
+    <div className="App">
+      <DevTools />
+      <h1>{this.props.store.count}</h1>
+      <button onClick={this.handleDecrement}>-1</button>
+      <button onClick={this.handleIncrement}>+1</button>
+    </div>
+  ) 
+  };
+}
+
+ReactDOM.render(  
+  <Counter store={counterState} />,
   document.getElementById('root')
 );
