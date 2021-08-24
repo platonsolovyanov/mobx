@@ -2,36 +2,30 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import DevTools from 'mobx-react-devtools';
-import { observable, computed, extendObservable } from 'mobx';
+import { observable, computed } from 'mobx';
 import { observer } from 'mobx-react';
 
 //В mobx нет строгого разделения на store, action, reduse. Фактически у нас всегда есть объект за свойствами которого мы следим а изменяем его свойства при посмощи свойств этого же объекта.
 //Изменяем соществующие свойства, а не создаем копью объекта с новыми значениями.
 //Все что касается стора может хранится в одном классе
 
-const nickName = new class UserNickName {
+const nickName = observable( {
 
-  constructor(){ extendObservable(this, {
+  
     firstName : 'Platon',
-    age : 21
-  })}
+    age : 21,
 
-  // @observable firstName = 'Platon';
-  // @observable age = 21;
-
-  @computed get nickName() {
+  get nickName() {
     console.log('Generate nickName');
     return `${this.firstName}${this.age}`
+  },
+  increment()  {
+    this.age++
+  },
+  decrement() {
+    this.age--
   }
-}
-
-nickName.increment = function() {
-  this.age++
-}
-
-nickName.decrement = function() {
-  this.age--
-}
+})
 
 @observer class Counter extends Component {  
 
