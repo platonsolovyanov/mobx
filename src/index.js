@@ -33,7 +33,7 @@ nickName.decrement = function() {
     <div className="App">
       <DevTools />
       <h1>{this.props.store.nickName}</h1>
-      <h1>{this.props.store.count}</h1>
+      <h1>{this.props.store.age}</h1>
       <button onClick={this.handleDecrement}>-1</button>
       <button onClick={this.handleIncrement}>+1</button>
     </div>
