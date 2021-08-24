@@ -27,6 +27,14 @@ const nickName = observable( {
   }
 })
 
+const todos = observable(
+  [
+    {text: 'Learn React'},
+    {text: 'Learn Mobx'}
+  ]
+)
+
+
 @observer class Counter extends Component {  
 
   handleIncrement = () =>{this.props.store.increment()}
@@ -40,12 +48,19 @@ const nickName = observable( {
       <h1>{this.props.store.age}</h1>
       <button onClick={this.handleDecrement}>-1</button>
       <button onClick={this.handleIncrement}>+1</button>
+
+      <ul>
+        {this.props.store.map(({text}) => <li key={text}>{text}</li>)}
+      </ul>
     </div>
   ) 
   };
-}
+} 
 
 ReactDOM.render(  
-  <Counter store={nickName} />,
+  <Counter store={todos} />,
   document.getElementById('root')
 );
+
+//если убрать у todos observable то push не вызовт render
+todos.push({text: 'Learn Redux'})
